@@ -42,14 +42,24 @@ const userSchema = new mongoose.Schema({
                 throw Error('Age cannot be negative');
             }
         }
-    }
+    },
+    tokens:[
+        {
+            token:{
+                type:String,
+                required:true,
+
+            }
+        }
+    ]
 });
 
 userSchema.methods.generateAuthToken = async function(){
     try{
         const user = this;
         const token = jwt.sign({ _id: user._id.toString() },'this');
-        console.log(token);
+        user.tokens = user.tokens.concat({token});
+        await user.save();
         return token;
     }catch(e){
         throw new Error(e);

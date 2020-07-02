@@ -1,13 +1,14 @@
 const express = require('express');
 const router = new express.Router();
 const User = require('../models/user');
+const auth = require('../middleware/auth');
 
 router.get('/users',async (req,res)=>{
     try{
         const user = new User(req.body);
+        const token = await user.generateAuthToken();
         await user.save();
-        console.log('Creating...')
-        res.status(201).send(user);
+        res.status(201).send({user,token});
     }catch(e){
         res.status(400).send(e);
     }
