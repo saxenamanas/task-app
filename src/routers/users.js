@@ -15,6 +15,10 @@ router.get('/users',async (req,res)=>{
 
 });
 
+router.get('/users/me',auth,async(req,res)=>{
+    res.send(req.user);
+});
+
 
 router.post('/users/login',async(req,res)=>{
     try{
@@ -79,5 +83,4 @@ router.patch('/users/:id',async(req,res)=>{
     }
 
 });
-
 module.exports = router;
